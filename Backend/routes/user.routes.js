@@ -1,4 +1,5 @@
 import express from "express";
+<<<<<<< HEAD
 import {
     registerUser,
     loginUser,
@@ -17,6 +18,14 @@ const router = express.Router();
 
 // Public routes
 router.post("/register", registerUser);
+=======
+import { registerUser, loginUser, getUserProfile } from "../controllers/userController.js";
+import { upload } from "../middlewares/multer.middleware.js";
+
+const router = express.Router();
+
+router.post("/register",upload.single("profilePhoto"), registerUser);
+>>>>>>> 072a88a23b51e173151698179d27a9290f194ab3
 router.post("/login", loginUser);
 router.get("/search", searchUsersBySkill);
 router.get("/public", getAllPublicUsers);

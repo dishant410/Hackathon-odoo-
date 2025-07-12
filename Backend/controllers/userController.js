@@ -1,14 +1,21 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+<<<<<<< HEAD
 import SwapRequest from "../models/swaprequest.model.js";
 import Feedback from "../models/feedback.model.js";
 import ActivityLog from "../models/activitylog.model.js";
+=======
+import { uploadOncloudinary } from "../utils/cloudinary.js";
+>>>>>>> 072a88a23b51e173151698179d27a9290f194ab3
 
-// Register
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, location } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email and password are required" });
+    }
 
     const userExists = await User.findOne({ email });
     if (userExists)
@@ -16,15 +23,25 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    let photoUrl = "https://avatar.iran.liara.run/public/boy"; // Default avatar
+    if (req.file) {
+      const uploadResult = await uploadOncloudinary(req.file.path);
+      if (uploadResult) photoUrl = uploadResult.secure_url;
+    }
+
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
+<<<<<<< HEAD
       profilePhoto: "https://avatar.iran.liara.run/public/boy",
+=======
+      profilePhoto: photoUrl,
+>>>>>>> 072a88a23b51e173151698179d27a9290f194ab3
       location,
     });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "jnjininujfnocnojn", {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "defaultsecret", {
       expiresIn: "7d",
     });
     res.cookie("token", token)
@@ -35,22 +52,17 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// Login
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user)
-      return res.status(404).json({ message: "User not found" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.status(200).json({ user, token });
   } catch (err) {
@@ -58,17 +70,17 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// Get User Profile
 export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.user.id });
-    if (!user)
-      return res.status(404).json({ message: "User not found" });
+    const user = await User.findOne({ email: req.query.email }).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+<<<<<<< HEAD
 
 // Update User Profile
 export const updateUserProfile = async (req, res) => {
@@ -200,3 +212,5 @@ export const unbanUser = async (req, res) => {
   }
 };
 
+=======
+>>>>>>> 072a88a23b51e173151698179d27a9290f194ab3
