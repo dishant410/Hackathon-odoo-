@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     availability: { type: String },
     isPublic: { type: Boolean, default: true },
     isAdmin: { type: Boolean, default: false },
+    isBanned: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
