@@ -3,8 +3,9 @@ import { createBrowserRouter , RouterProvider} from "react-router-dom";
 import Signup from "./components/AuthPages/Signup";
 import Login from "./components/AuthPages/Login";
 import { Toaster } from "sonner";
+import { Homepage } from "./components/Homepage";
 const router = createBrowserRouter([
-  // {path:"/",element:<HomePage/>},
+  {path:"/",element:<Homepage/>},
   {path:"/register",element:<Signup/>},
   {path:"/login",element:<Login/>}
 ])
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="p-4 h-screen flex items-center justify-center">
+    <div>
  <Toaster position="top-right" reverseOrder={false} />
    <RouterProvider router={router}/>
   </div>
