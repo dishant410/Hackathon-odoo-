@@ -1,3 +1,9 @@
+## Dishant Nakrani - dishantnakrani410@gmail.com
+## Divy Kalathiya - divykalathiya17@gmail.com
+## Smit Satani - smitsatani07@gmail.com
+## Krish Kakadiya - krishkakadiya000007@gmail.com
+
+
 # Skill Swap Platform
 
 A modern web application that enables users to list their skills and request others in return. Built with React, Node.js, and MongoDB.
