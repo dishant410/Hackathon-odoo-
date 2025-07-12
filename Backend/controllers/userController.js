@@ -17,6 +17,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      profilePhoto:"https://avatar.iran.liara.run/public/boy",
       location,
     });
 
@@ -52,3 +53,16 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Get User Profile
+export const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.user.id });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+    
